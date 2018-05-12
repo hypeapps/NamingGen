@@ -2,6 +2,7 @@ package com.zaleski.rafal.naminggen.di.components;
 
 import com.zaleski.rafal.naminggen.di.PerFragment;
 import com.zaleski.rafal.naminggen.features.namelist.NameListFragment;
+import com.zaleski.rafal.naminggen.features.statisticdata.StatisticDataFragment;
 
 import dagger.Component;
 
@@ -10,4 +11,6 @@ import dagger.Component;
 public interface FragmentComponent {
 
     void inject(NameListFragment nameListFragment);
+
+    void inject(StatisticDataFragment statisticDataFragment);
 }
