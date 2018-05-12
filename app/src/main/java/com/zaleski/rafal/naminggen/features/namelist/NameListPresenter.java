@@ -34,6 +34,9 @@ public class NameListPresenter extends Presenter<NameListView> {
 
     @Override
     protected void onDetachView() {
+        if (!disposables.isDisposed()) {
+            disposables.dispose();
+        }
         super.onDetachView();
     }
 
@@ -49,13 +52,13 @@ public class NameListPresenter extends Presenter<NameListView> {
                     .subscribeWith(new NameListObserver()));
             this.view.invalidateFilterText(2);
         } else if (nameFilter.isFemale()) {
-            disposables.add(nameDataRepository.getFemaleNames()
+            disposables.add(nameDataRepository.getAllFemaleNames()
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new NameListObserver()));
             this.view.invalidateFilterText(1);
         } else {
-            disposables.add(nameDataRepository.getMaleNames()
+            disposables.add(nameDataRepository.getAllMaleNames()
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new NameListObserver()));

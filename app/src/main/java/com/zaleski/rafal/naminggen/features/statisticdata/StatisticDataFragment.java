@@ -1,4 +1,4 @@
-package com.zaleski.rafal.naminggen.features.namelist;
+package com.zaleski.rafal.naminggen.features.statisticdata;
 
 import android.arch.paging.PagedList;
 import android.content.DialogInterface;
@@ -29,10 +29,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class NameListFragment extends Fragment implements NameListView {
+public class StatisticDataFragment extends Fragment implements StatisticDataView {
 
     @Inject
-    public NameListPresenter presenter;
+    public StatisticDataPresenter presenter;
 
     @BindView(R.id.name_list)
     public RecyclerView recyclerView;
@@ -40,11 +40,16 @@ public class NameListFragment extends Fragment implements NameListView {
     @BindView(R.id.sex)
     public TextView sexText;
 
-    private NameListRecyclerAdapter nameListRecyclerAdapter;
+    @BindView(R.id.voivodeship)
+    public TextView voivodeship;
 
-    private AlertDialog alertDialog;
+    private StatisticDataRecyclerAdapter recyclerAdapter;
 
-    private NameFilter submitNameFilter = new NameFilter(false, true);
+    private AlertDialog chooseGenderDialog;
+
+    private AlertDialog chooseVoivodeshipDialog;
+
+    private NameFilter submitNameFilter = new NameFilter(true, true, "Wszystkie");
 
     public FragmentComponent getComponent() {
         return DaggerFragmentComponent.builder()
@@ -55,7 +60,7 @@ public class NameListFragment extends Fragment implements NameListView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_name_list, container, false);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_statistic_data, container, false);
         ButterKnife.bind(this, view);
         getComponent().inject(this);
         return view;
@@ -71,32 +76,35 @@ public class NameListFragment extends Fragment implements NameListView {
     @Override
     public void onDestroyView() {
         presenter.onDetachView();
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
+        if (chooseGenderDialog != null && chooseGenderDialog.isShowing()) {
+            chooseGenderDialog.dismiss();
+        }
+        if (chooseVoivodeshipDialog != null && chooseVoivodeshipDialog.isShowing()) {
+            chooseVoivodeshipDialog.dismiss();
         }
         super.onDestroyView();
     }
 
     @Override
     public void initRecyclerAdapter() {
-        nameListRecyclerAdapter = new NameListRecyclerAdapter(getActivity());
+        recyclerAdapter = new StatisticDataRecyclerAdapter(getActivity());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), linearLayoutManager.getOrientation());
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.decorator_recycler_item));
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(nameListRecyclerAdapter);
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
     @Override
     public void onNextItemList(PagedList<Name> pagedList) {
-        nameListRecyclerAdapter.submitList(pagedList);
+        recyclerAdapter.submitList(pagedList);
     }
 
     @Override
     public void clearListRecycler() {
-        if (nameListRecyclerAdapter.getCurrentList() != null) {
-            this.nameListRecyclerAdapter = null;
+        if (recyclerAdapter.getCurrentList() != null) {
+            this.recyclerAdapter = null;
             this.initRecyclerAdapter();
         }
     }
@@ -106,44 +114,76 @@ public class NameListFragment extends Fragment implements NameListView {
         presenter.onFilterButtonClick(submitNameFilter);
     }
 
+    private NameFilter newFilter = new NameFilter();
+
     @Override
-    public void openFilterDialog(NameFilter nameFilter) {
+    public void openFilterGenderDialog(NameFilter nameFilter) {
         final CharSequence[] options = getResources().getStringArray(R.array.gender);
-        int checkedSex = 0;
+        int checkedGender = 0;
         if (nameFilter.isMale() && nameFilter.isFemale()) {
-            checkedSex = 2;
+            checkedGender = 2;
         } else if (nameFilter.isFemale()) {
-            checkedSex = 1;
+            checkedGender = 1;
         } else if (nameFilter.isMale()) {
-            checkedSex = 0;
+            checkedGender = 0;
         }
-        alertDialog = new AlertDialog.Builder(getContext())
+        chooseGenderDialog = new AlertDialog.Builder(getContext())
                 .setTitle("Wybierz płeć imion")
                 .setIcon(R.drawable.ic_female_male)
-                .setSingleChoiceItems(options, checkedSex, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(options, checkedGender, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            submitNameFilter = new NameFilter(false, true);
+                            newFilter = new NameFilter(false, true);
                         } else if (which == 1) {
-                            submitNameFilter = new NameFilter(true, false);
+                            newFilter = new NameFilter(true, false);
                         } else {
-                            submitNameFilter = new NameFilter(true, true);
+                            newFilter = new NameFilter(true, true);
                         }
                     }
                 })
                 .setPositiveButton("Wybierz", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        presenter.onSubmitFilter(submitNameFilter);
+                        newFilter.setVoivodeship(submitNameFilter.getVoivodeship());
+                        openFilterDialogVoivodeship(newFilter);
                     }
                 }).setNegativeButton("Anuluj", null)
                 .create();
-        alertDialog.show();
+        chooseGenderDialog.show();
+    }
+
+    public void openFilterDialogVoivodeship(final NameFilter nameFilter) {
+        final String[] options = getResources().getStringArray(R.array.voivodeship);
+        int checkedItem = 0;
+        for (int i = 0; i < options.length; i++) {
+            if (options[i].equals(submitNameFilter.getVoivodeship())) {
+                checkedItem = i;
+            }
+        }
+        chooseVoivodeshipDialog = new AlertDialog.Builder(getContext())
+                .setTitle("Wybierz województwo")
+                .setIcon(R.drawable.ic_voivodeship)
+                .setSingleChoiceItems(options, checkedItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        nameFilter.setVoivodeship(options[which]);
+                    }
+                })
+                .setPositiveButton("Wybierz", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        submitNameFilter = nameFilter;
+                        presenter.onSubmitFilter(submitNameFilter);
+                    }
+                })
+                .setNegativeButton("Anuluj", null)
+                .show();
     }
 
     @Override
-    public void invalidateFilterText(int which) {
-        sexText.setText(getResources().getStringArray(R.array.gender)[which]);
+    public void invalidateFilterText(int whichGender, String voivodeship) {
+        sexText.setText(getResources().getStringArray(R.array.gender)[whichGender]);
+        this.voivodeship.setText(voivodeship);
     }
 }
