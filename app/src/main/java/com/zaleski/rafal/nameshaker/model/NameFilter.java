@@ -1,4 +1,4 @@
-package com.zaleski.rafal.naminggen.dataprovider.datasource;
+package com.zaleski.rafal.nameshaker.model;
 
 public class NameFilter {
 
