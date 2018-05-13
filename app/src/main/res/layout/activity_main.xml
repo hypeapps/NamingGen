@@ -25,24 +25,24 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_button_disable_notifications"
+            android:id="@+id/fab_button_send_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/accent"
             app:fab_colorPressed="@color/accent"
             app:fab_icon="@drawable/ic_send_info"
             app:fab_size="mini"
-            app:fab_title="Wyślij dane na serwer" />
+            app:fab_title="Prześlij dane na serwer" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_button_start_new"
+            android:id="@+id/fab_button_share_facebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/accent"
             app:fab_colorPressed="@color/accent"
             app:fab_icon="@drawable/ic_share"
             app:fab_size="mini"
-            app:fab_title="Udostępnij na FB" />
+            app:fab_title="Opublikuj na FB" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/sex"
+        android:id="@+id/gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
         android:drawableStart="@drawable/ic_voivodeship"
         android:gravity="center"
         android:text="Wszystkie"
-        app:layout_constraintStart_toEndOf="@id/sex" />
+        app:layout_constraintStart_toEndOf="@id/gender" />
 
     <ImageView
         android:id="@+id/filter_icon"

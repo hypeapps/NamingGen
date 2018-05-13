@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">NamingGen</string>
+    <string name="app_name">Name Shaker</string>
+    <string name="text_share_fb">Wybraliśmy imię dla dziecka: \"wpisz imię wyżej\"</string>
+    <string name="format_choosen_name">Wybraliśmy imię dla dziecka: \"%1$s\"</string>
+    <string name="facebook_app_id">1271047893040223</string>
 </resources>

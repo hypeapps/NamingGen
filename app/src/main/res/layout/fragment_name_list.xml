@@ -18,7 +18,7 @@
         android:layout_marginStart="16dp"
         android:drawablePadding="8dp"
         android:gravity="center"
-        android:id="@+id/sex"
+        android:id="@+id/gender"
         app:layout_constraintBottom_toBottomOf="@id/filter_bar_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

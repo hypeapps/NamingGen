@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/send_info_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <EditText
+        android:id="@+id/edit_text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/ic_person"
+        android:hint="Wpisz imię swojego dziecka"
+        android:inputType="text"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/voivodeship"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="Województwo:"
+        app:layout_constraintBottom_toBottomOf="@+id/voivodeship_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/voivodeship_spinner"
+        app:layout_constraintStart_toStartOf="@+id/edit_text_name"
+        app:layout_constraintTop_toTopOf="@+id/voivodeship_spinner" />
+
+    <Spinner
+        android:id="@+id/voivodeship_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/edit_text_name"
+        app:layout_constraintStart_toEndOf="@+id/voivodeship"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_name" />
+
+    <TextView
+        android:id="@+id/date_year"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Rok urodzenia:"
+        app:layout_constraintEnd_toStartOf="@+id/year_spinner"
+        app:layout_constraintStart_toStartOf="@+id/voivodeship"
+        app:layout_constraintTop_toBottomOf="@+id/voivodeship_spinner" />
+
+    <Spinner
+        android:id="@+id/year_spinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:calendarViewShown="false"
+        app:layout_constraintBottom_toBottomOf="@+id/date_year"
+        app:layout_constraintEnd_toEndOf="@+id/voivodeship_spinner"
+        app:layout_constraintStart_toEndOf="@+id/date_year"
+        app:layout_constraintTop_toBottomOf="@+id/voivodeship_spinner" />
+
+    <Button
+        android:id="@+id/button_submit_info"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/ic_send"
+        android:drawablePadding="8dp"
+        android:text="Prześlij do"
+        app:layout_constraintEnd_toEndOf="@+id/year_spinner"
+        app:layout_constraintStart_toStartOf="@+id/date_year"
+        app:layout_constraintTop_toBottomOf="@+id/year_spinner" />
+
+</android.support.constraint.ConstraintLayout>
