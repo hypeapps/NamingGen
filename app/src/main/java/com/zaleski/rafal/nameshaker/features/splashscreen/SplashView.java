@@ -11,4 +11,5 @@ public interface SplashView extends View {
     void interruptSplash();
 
     void navigateToMainActivity();
+
 }

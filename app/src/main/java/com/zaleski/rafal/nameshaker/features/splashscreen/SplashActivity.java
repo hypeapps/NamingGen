@@ -1,7 +1,5 @@
 package com.zaleski.rafal.nameshaker.features.splashscreen;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +18,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
 
     private final SplashPresenter presenter = new SplashPresenter();
 
-    private ValueAnimator animator = new ValueAnimator();
+    private ValueAnimator animator = ValueAnimator.ofInt(0, 100);
 
     @BindView(R.id.splash_logo)
     public ImageView logo;
@@ -41,20 +39,21 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
 
     @Override
     public void startSplash() {
-        this.animator.setIntValues(0, 1);
         animator.setDuration(2000);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation, boolean isReverse) {
-                presenter.onSplashEnd();
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                if ((int) animation.getAnimatedValue() == 100) {
+                    presenter.onSplashEnd();
+                }
             }
         });
+
         animator.start();
     }
 
     @Override
     public void interruptSplash() {
-        if (animator.isStarted()) {
+        if (animator != null && animator.isStarted()) {
             animator.cancel();
         }
     }
@@ -68,5 +67,6 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     public void navigateToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

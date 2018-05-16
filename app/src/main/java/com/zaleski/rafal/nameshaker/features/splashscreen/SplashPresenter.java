@@ -14,7 +14,7 @@ public class SplashPresenter extends Presenter<SplashView> {
     @Override
     protected void onDetachView() {
         super.onDetachView();
-        this.view.interruptSplash();
+        if (this.view != null) this.view.interruptSplash();
     }
 
     public void onSplashEnd() {
