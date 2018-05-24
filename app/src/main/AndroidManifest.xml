@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
-        android:name="android.hardware.camera.front"
+        android:name="android.hardware.camera.f*ront"
         android:required="false" />
 
     <application
@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".features.splashscreen.SplashActivity">
+        <activity
+            android:name=".features.splashscreen.SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

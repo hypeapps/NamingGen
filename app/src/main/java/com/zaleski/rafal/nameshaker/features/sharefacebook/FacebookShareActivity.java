@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -168,7 +169,13 @@ public class FacebookShareActivity extends AppCompatActivity implements Facebook
     @OnClick(R.id.button_share)
     @Override
     public void onShare() {
-        Log.e("log", name.getText().toString().length() + "");
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/00"));
+            startActivity(intent);
+        } catch (Exception e) {
+            openFacebookGooglePlay();
+            return;
+        }
         if (name.getText() != null && name.getText().toString().length() != 0 && photoBitmap != null) {
             photoBitmap = BitmapUtil.setTextOnBitmap(photoBitmap, "Wybraliśmy imię dla dziecka: " + name.getText().toString().trim() + "!");
             ShareDialog shareDialog = new ShareDialog(this);
@@ -176,9 +183,15 @@ public class FacebookShareActivity extends AppCompatActivity implements Facebook
                     .addMedium(new SharePhoto.Builder().setBitmap(photoBitmap).build())
                     .build();
             shareDialog.show(shareContent);
+            Log.e("log", name.getText().toString().length() + "");
         } else {
             showError("Musisz uzupełnić wszystkie dane");
         }
+    }
+
+    private void openFacebookGooglePlay() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.facebook.katana&hl=pl"));
+        startActivity(intent);
     }
 
     @Override
